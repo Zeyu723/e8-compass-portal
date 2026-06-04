@@ -1,6 +1,7 @@
 import type { AssessmentRequest, AssessmentResponse } from "./types";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
+const isDev = typeof window !== "undefined" && window.location.hostname === "localhost";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || (isDev ? "http://23.254.236.178:8000" : "/api");
 
 export async function fetchDemoResult(): Promise<AssessmentResponse> {
   const res = await fetch(`${API_BASE}/demo/sample-result`);
