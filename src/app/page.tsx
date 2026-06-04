@@ -211,7 +211,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="border-b bg-white shadow-sm">
-        <div className="mx-auto max-w-[1600px] px-6 py-4 flex items-center justify-between">
+        <div className="mx-auto max-w-[1600px] px-3 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white">
               <Shield className="h-5 w-5" />
@@ -240,10 +240,10 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1600px] px-6 py-6">
-        <div className="grid grid-cols-12 gap-6">
+      <main className="mx-auto max-w-[1600px] px-3 sm:px-6 py-3 sm:py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
           {/* LEFT: Assessment Wizard */}
-          <div className="col-span-3 space-y-4">
+          <div className="lg:col-span-3 space-y-3 sm:space-y-4">
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
@@ -392,7 +392,7 @@ export default function Home() {
           </div>
 
           {/* MIDDLE: Agent Review */}
-          <div className="col-span-4 space-y-4">
+          <div className="lg:col-span-4 space-y-3 sm:space-y-4">
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
@@ -443,9 +443,9 @@ export default function Home() {
           </div>
 
           {/* RIGHT: Dashboard Report */}
-          <div className="col-span-5 space-y-4">
+          <div className="lg:col-span-5 space-y-3 sm:space-y-4">
             {!result && !loading && (
-              <Card className="flex items-center justify-center h-96">
+              <Card className="flex items-center justify-center h-48 sm:h-96">
                 <div className="text-center text-muted-foreground">
                   <BarChart3 className="h-12 w-12 mx-auto mb-3 opacity-30" />
                   <p className="text-sm font-medium">Guidance Dashboard</p>
@@ -470,12 +470,12 @@ export default function Home() {
                 {/* Status Header */}
                 <Card>
                   <CardContent className="py-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div>
                         <p className="text-xs text-muted-foreground">Control Assessment</p>
                         <p className="text-lg font-bold">{result.assessment.control}</p>
                       </div>
-                      <div className="text-right flex items-center gap-3">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 sm:text-right">
                         <div>
                           <span className={`inline-block rounded-full border px-4 py-1.5 text-sm font-bold ${statusColor(result.final_result.status)}`}>
                             {result.final_result.status}
@@ -499,7 +499,7 @@ export default function Home() {
                 </Card>
 
                 {/* Evidence Found + Gaps */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <Card>
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm flex items-center gap-2">
@@ -602,7 +602,7 @@ export default function Home() {
 
         {/* Bottom: JSON Debug */}
         {result && (
-          <div className="mt-6">
+          <div className="mt-4 sm:mt-6">
             <Card>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
