@@ -107,9 +107,25 @@ export default function Home() {
         const result = await mammoth.extractRawText({ arrayBuffer: buffer });
         extracted = result.value;
       } else if (extension === ".pdf") {
-        throw new Error("PDF parsing is not enabled in this demo. Please paste extracted text or upload .txt/.md/.docx.");
+        const pdfjsLib = await import("pdfjs-dist");
+        if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = "//unpkg.com/pdfjs-dist@" + pdfjsLib.version + "/build/pdf.worker.min.mjs";
+        }
+        const buffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: buffer.slice(0) }).promise;
+        const pages: string[] = [];
+        for (let i = 1; i <= Math.min(pdf.numPages, 50); i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const pageText = textContent.items.map((item: any) => item.str || "").join(" ");
+          pages.push(pageText);
+        }
+        extracted = pages.join("\n");
+        if (extracted.trim().length < 50) {
+          throw new Error("This PDF appears to be a scanned document (no text layer). OCR is not supported. Please paste the text content manually.");
+        }
       } else {
-        throw new Error("Unsupported file type. Use .txt, .md, .csv, .json, .log, or .docx.");
+        throw new Error("Unsupported file type. Use .txt, .md, .csv, .json, .log, .docx, or .pdf.");
       }
 
       const trimmed = extracted.trim();
@@ -484,7 +500,7 @@ export default function Home() {
                         <div className="text-right">
                           <p className="text-xs text-muted-foreground">Evidence Quality</p>
                           <span className={`inline-block rounded-full border px-3 py-1 text-xs font-semibold ${bandColor(result.evidence_quality.confidence_band)}`}>
-                            {result.evidence_quality.confidence_band} ({result.evidence_quality.confidence_score})
+                            {result.evidence_quality.confidence_band} · {(result.evidence_quality.confidence_score * 100).toFixed(0)}% confidence
                           </span>
                         </div>
                         <div className="text-right">
