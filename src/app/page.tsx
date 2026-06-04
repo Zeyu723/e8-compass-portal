@@ -125,8 +125,8 @@ export default function Home() {
             return { promise, resolve, reject };
           };
         }
-        const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.mjs");
-        pdfjsLib.GlobalWorkerOptions.workerSrc = "//unpkg.com/pdfjs-dist@" + pdfjsLib.version + "/legacy/build/pdf.worker.min.mjs";
+        const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf");
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "//unpkg.com/pdfjs-dist@" + pdfjsLib.version + "/legacy/build/pdf.worker.min.js";
         const buffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: buffer.slice(0) }).promise;
         const pages: string[] = [];
