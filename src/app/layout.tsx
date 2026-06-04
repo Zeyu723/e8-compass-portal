@@ -5,8 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "E8 Compass Portal",
-  description: "AI-guided Essential Eight self-assessment and evidence review",
+  title: "Sovereign E8",
+  description: "AI-powered Essential Eight cyber security assessment — Australian sovereign capability",
+  icons: { icon: "/favicon.ico", apple: "/logo.png" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

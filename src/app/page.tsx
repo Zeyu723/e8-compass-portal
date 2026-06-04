@@ -229,9 +229,7 @@ export default function Home() {
       <header className="border-b bg-white shadow-sm">
         <div className="mx-auto max-w-[1600px] px-3 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white">
-              <Shield className="h-5 w-5" />
-            </div>
+            <img src="/logo-original.jpeg" alt="Sovereign E8" className="h-10 w-10 rounded-lg object-cover" />
             <div>
               <h1 className="text-xl font-bold tracking-tight">E8 Compass Portal</h1>
               <p className="text-xs text-muted-foreground">AI-guided Essential Eight Self-Assessment</p>
