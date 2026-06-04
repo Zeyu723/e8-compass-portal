@@ -107,10 +107,26 @@ export default function Home() {
         const result = await mammoth.extractRawText({ arrayBuffer: buffer });
         extracted = result.value;
       } else if (extension === ".pdf") {
-        const pdfjsLib = await import("pdfjs-dist");
-        if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
-          pdfjsLib.GlobalWorkerOptions.workerSrc = "//unpkg.com/pdfjs-dist@" + pdfjsLib.version + "/build/pdf.worker.min.mjs";
+        const PromiseWithResolvers = Promise as typeof Promise & {
+          withResolvers?: <T>() => {
+            promise: Promise<T>;
+            resolve: (value: T | PromiseLike<T>) => void;
+            reject: (reason?: unknown) => void;
+          };
+        };
+        if (!PromiseWithResolvers.withResolvers) {
+          PromiseWithResolvers.withResolvers = function withResolvers<T>() {
+            let resolve!: (value: T | PromiseLike<T>) => void;
+            let reject!: (reason?: unknown) => void;
+            const promise = new Promise<T>((res, rej) => {
+              resolve = res;
+              reject = rej;
+            });
+            return { promise, resolve, reject };
+          };
         }
+        const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.mjs");
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "//unpkg.com/pdfjs-dist@" + pdfjsLib.version + "/legacy/build/pdf.worker.min.mjs";
         const buffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: buffer.slice(0) }).promise;
         const pages: string[] = [];
