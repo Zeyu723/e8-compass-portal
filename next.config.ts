@@ -1,22 +1,9 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: "/api/assessments/:path*",
-        destination: "http://23.254.236.178:8000/assessments/:path*",
-      },
-      {
-        source: "/api/demo/:path*",
-        destination: "http://23.254.236.178:8000/demo/:path*",
-      },
-      {
-        source: "/api/health",
-        destination: "http://23.254.236.178:8000/health",
-      },
-    ];
-  },
-};
+// Post-hackathon mode: the Python backend on the VPS is retired.
+// /api/demo/sample-result is now a real Next.js route handler (see
+// src/app/api/demo/sample-result/route.ts). Filesystem routes take
+// precedence over rewrites, so no proxy entries are needed anymore.
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

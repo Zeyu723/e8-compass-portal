@@ -254,7 +254,7 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs">
               <Server className="mr-1 h-3 w-3" />
-              API: {process.env.NEXT_PUBLIC_API_BASE_URL || "23.254.236.178:8000"}
+              API: {process.env.NEXT_PUBLIC_API_BASE_URL || "vercel serverless"}
             </Badge>
             {result && (
               <Badge variant={result.metadata.used_fallback ? "secondary" : "default"} className="text-xs">
