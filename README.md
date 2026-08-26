@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sovereign E8 — AI-Guided Essential Eight Self-Assessment Portal
 
-## Getting Started
+Built for **CyberWest Hackathon 2026** (WA Government security challenge, Perth) —
+Team lead: Zeyu Xu, 5-person team.
 
-First, run the development server:
+**Live demo:** https://e8-compass-portal.vercel.app
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+An AI-assisted self-assessment portal for the ACSC **Essential Eight** maturity
+model: upload policy documents, tool output, or evidence files, and a
+five-agent review council reads the evidence, maps it to E8 controls, checks
+what is actually proven, critiques the gaps, and writes guidance with
+maturity-scored recommendations — auditable, not vague LLM output.
+
+## Repo layout
+
+```
+├── src/                  # Next.js 16 frontend (App Router, TypeScript, Tailwind, shadcn/ui)
+│   └── app/api/demo/     # serverless route serving the static demo sample
+└── backend/              # FastAPI five-agent pipeline (Python)
+    ├── app/services/     #   agent chain, provider routing, E8 knowledge engine, rubric
+    └── tests/            #   pytest suite
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## The five-agent pipeline
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Agent | Job |
+|---|---|
+| Document Reader | Extracts claims and structure from the uploaded document |
+| Essential Eight Mapper | Maps extracted content to E8 controls |
+| Evidence Checker | Classifies evidence strength — policy intent vs implementation proof |
+| Critic | Challenges the assessment, surfaces gaps and missing evidence |
+| Guidance Writer | Produces maturity rating, gaps, questions, recommendations |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+A deterministic knowledge engine (`backend/app/services/e8_knowledge.py`)
+encodes the Essential Eight control logic with a fixed rubric, keeping scores
+consistent and auditable; LLM providers (OpenAI / Kimi / Zhipu / Claude) are
+hot-swappable behind one agent interface, with rubric fallback when no
+provider is reachable.
 
-## Learn More
+## Run
 
-To learn more about Next.js, take a look at the following resources:
+**Frontend** (deployed to Vercel):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev        # http://localhost:3000 — demo works fully offline of the backend
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Backend** (optional, for live assessments):
 
-## Deploy on Vercel
+```bash
+cd backend && ./run.sh    # http://localhost:8000 — see backend/README.md
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Status
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The live portal runs frontend-only: the demo sample is served by a Vercel
+serverless route, so it never depends on a separate server. The full agent
+pipeline is in `backend/` for reference and local runs.
+
+## License
+
+MIT
